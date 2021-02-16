@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
+    <PackageReference Include="WebMarkupMin.AspNetCore3" Version="2.9.2" />
   </ItemGroup>
 
 </Project>
