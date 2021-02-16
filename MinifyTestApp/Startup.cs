@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebMarkupMin.AspNetCore3;  //-- use WebMarkupMin that we install from nuget packages
 
 namespace MinifyTestApp
 {
@@ -24,6 +25,24 @@ namespace MinifyTestApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            //ToString Minify CSHTML file we will be using WebMarkupMin.AspNetCore3  - Mark Vanz
+            //Start  - Mark Vanz
+            services.AddWebMarkupMin(
+                option =>
+                {
+                    option.AllowMinificationInDevelopmentEnvironment = true;
+                    option.AllowCompressionInDevelopmentEnvironment = true;
+                })
+                .AddHtmlMinification(
+                option =>
+                {
+                    option.MinificationSettings.RemoveRedundantAttributes = true;
+                    option.MinificationSettings.RemoveHttpProtocolFromAttributes = true; // Http Protocol attributes  - Mark Vanz
+                    option.MinificationSettings.RemoveHttpsProtocolFromAttributes = true; // Https Protocol attributes  - Mark Vanz
+                })
+                .AddHttpCompression();
+            //END  - Mark Vanz
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,6 +60,8 @@ namespace MinifyTestApp
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseWebMarkupMin(); // Use WebMarkup during run time. - Mark Vanz
 
             app.UseRouting();
 
